@@ -1,8 +1,7 @@
 % script for loading HDF5 trajectory files from a list, counting the number of worms
 % i.e. tracks per frame, and plot it against frame number
 
-% retrieve the list of files to plot
-
+% retrieve the list of files to plot, one line at a time
 fid = fopen('N2_1_list.txt');
 sfpath = fgetl(fid);
 
@@ -23,7 +22,7 @@ while ischar(sfpath)
     set(gca,'FontSize',15)
     hold on
     
-    % go to the next file
+    % go to the next line/file
     sfpath = fgetl(fid);
     ii = ii+1;
 end
