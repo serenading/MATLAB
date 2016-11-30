@@ -1,0 +1,3 @@
+/Volumes/behavgenom_archive$/Serena/Results/recording 35.6 green 100-350 TIFF/recording 35.6 green_X1_trajectories.hdf5
+/Volumes/behavgenom_archive$/Serena/Results/recording 38.1 green 100-350 TIFF/recording 38.1 green_X1_trajectories.hdf5
+/Volumes/behavgenom_archive$/Serena/Results/recording 41.3 green 100-350 TIFF/recording 41.3 green_X1_trajectories.hdf5
