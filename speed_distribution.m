@@ -4,6 +4,7 @@
 Directory = '/data2/shared/data/recording 37/Results/recording 37.1 green 100-350 TIFF/recording 37.1 green_X1_trajectories.hdf5';
 FrameNumber = 5000;
 %tic
+
 %% Generate a list of objects in that frame for speed calculation
 % load current trajectory data
 trajData = h5read(Directory,'/plate_worms');
@@ -36,6 +37,7 @@ for jj = 1:numel(ObjList2)
     speedList(jj) = speed;
 end
 %toc
+
 %% Plot histogram
 
 histogram(speedList,'BinWidth',0.1)
