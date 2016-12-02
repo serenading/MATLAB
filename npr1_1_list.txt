@@ -6,4 +6,6 @@
 /data2/shared/data/recording 35/Results/recording 35.8 green 100-200 TIFF/recording 35.8 green_X1_trajectories.hdf5
 /data2/shared/data/recording 37/Results/recording 37.7 green 100-200 TIFF/recording 37.7 green_X1_trajectories.hdf5
 /data2/shared/data/recording 38/Results/recording 38.6 green 100-200 TIFF/recording 38.6 green_X1_trajectories.hdf5
+/data2/shared/data/recording 39/Results/recording 39.2 green 100-200 TIFF/recording 39.2 green_X1_trajectories.hdf5
+/data2/shared/data/recording 39/Results/recording 39.3 green 100-200 TIFF/recording 39.3 green_X1_trajectories.hdf5
 /data2/shared/data/recording 42/Results/recording 42.2 green 100-200 TIFF/recording 42.2 green_X1_trajectories.hdf5
