@@ -1,13 +1,12 @@
 % Script for generating a histogram of the speed distribution for a single movie frame
 
 %% Set the movie and frame
-Directory = '/data2/shared/data/recording 37/Results/recording 37.1 green 100-350 TIFF/recording 37.1 green_X1_trajectories.hdf5';
+Directory = '/data2/shared/data/Results/recording 37.1 green 100-350 TIFF/recording 37.1 green_X1_skeletons.hdf5';
 FrameNumber = 5000;
-tic
 
 %% Generate a list of objects in that frame for speed calculation
 % load current trajectory data
-trajData = h5read(Directory,'/plate_worms');
+trajData = h5read(Directory,'/trajectories_data');
 
 % list objects of interest for the frame
 % pre-allocate final ObjList
@@ -36,7 +35,6 @@ for jj = 1:numel(ObjList2)
     % add speed to the list
     speedList(jj) = speed;
 end
-toc
 
 %% Plot histogram
 
