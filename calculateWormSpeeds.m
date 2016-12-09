@@ -2,8 +2,8 @@
 
 %% set variables
 % directory should be set to the skeleton file for the appropriate movie
-directory = '/data2/shared/data/Results/recording 39.5 green 100-350 TIFF/recording 39.5 green_X1_skeletons.hdf5';
-firstframe = 900;
+directory = '/data2/shared/data/Results/recording 42.4 green 100-350 TIFF/recording 42.4 green_X1_skeletons.hdf5';
+firstframe = 27200;
 NumberOfFrames = 20;
 MaxSpeed = 10;
 
@@ -54,11 +54,10 @@ end
 
 %% plot histogram
 speedlist = vertcat(speedlist{:});
-histogram(speedlist,'BinWidth',0.1)
+histogram(speedlist,'BinWidth',0.1,'Normalization','Probability','EdgeColor','none')
 xlim([0,MaxSpeed])
 xlabel('speed (pixels/frame)','FontSize',20)
 ylabel('incidence','FontSize',20)
-%recording = directory(28:41);
-%framerange = strcat(num2str(firstframe),'-',num2str(firstframe+NumberOfFrames));
 title(strcat({directory(28:41)},{', frames '},{num2str(firstframe)},{'-'},{num2str(firstframe+NumberOfFrames)}))
 set(gca,'FontSize',15)
+set(t,'FontSize',20)
