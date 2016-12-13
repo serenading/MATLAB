@@ -1,8 +1,14 @@
 % calculate worm speeds from tracking data over a given range of frames
 
 %% set variables
+<<<<<<< HEAD
 directory = '/Users/sding/Desktop/new/data/Results/recording 37.4 green 100-350 TIFF/recording 37.4 green_X1_skeletons.hdf5';
 firstframe = 300;
+=======
+% directory should be set to the skeleton file for the appropriate movie
+directory = '/data2/shared/data/Results/recording 42.4 green 100-350 TIFF/recording 42.4 green_X1_skeletons.hdf5';
+firstframe = 27200;
+>>>>>>> origin/master
 NumberOfFrames = 20;
 MaxSpeed = 10;
 
@@ -53,9 +59,19 @@ end
 
 %% plot histogram
 speedlist = vertcat(speedlist{:});
+<<<<<<< HEAD
 histogram(speedlist,'BinWidth',0.1)
 title(strcat({'recording '},{num2str((directory(end-28:end-24)))},{', frames '},{num2str(firstframe)},'-',{num2str(firstframe+NumberOfFrames)}))
 xlim([0,MaxSpeed])
 xlabel('speed (pixels/frame)','FontSize',20)
 ylabel('incidence','FontSize',20)
 set(gca,'FontSize',15)
+=======
+histogram(speedlist,'BinWidth',0.1,'Normalization','Probability','EdgeColor','none')
+xlim([0,MaxSpeed])
+xlabel('speed (pixels/frame)','FontSize',20)
+ylabel('incidence','FontSize',20)
+title(strcat({directory(28:41)},{', frames '},{num2str(firstframe)},{'-'},{num2str(firstframe+NumberOfFrames)}))
+set(gca,'FontSize',15)
+set(t,'FontSize',20)
+>>>>>>> origin/master
