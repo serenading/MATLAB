@@ -1,8 +1,14 @@
 % Script for generating a histogram of the speed distribution for a single movie frame
 
+<<<<<<< HEAD
+%% Set the movie and frame
+Directory = '/Users/sding/Desktop/new/data/Results/recording 37.4 green 100-350 TIFF/recording 37.4 green_X1_skeletons.hdf5';
+FrameNumber = 1000;
+=======
 %% Set the movie (choose file path of the skeleton file) and frame
 Directory = '/data2/shared/data/Results/recording 37.4 green 100-350 TIFF/recording 37.4 green_X1_skeletons.hdf5'
 FrameNumber = 500;
+>>>>>>> origin/master
 
 %% Generate a list of objects in that frame for speed calculation
 % load current trajectory data
