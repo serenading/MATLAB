@@ -2,10 +2,10 @@
 
 %% set variables
 % directory should be set to the skeleton file for the appropriate movie
-directory = '/data2/shared/data/Results/recording 42.4 green 100-350 TIFF/recording 42.4 green_X1_skeletons.hdf5';
+directory = '/data2/shared/data/Results/oldResults/recording 42.4 green_X1_skeletons.hdf5';
 firstframe = 27200;
 NumberOfFrames = 20;
-MaxSpeed = 10;
+MaxSpeed = 51.3;
 
 %% load trajectory data and loop through frames to calculate speed
 skelTrajData = h5read(directory,'/trajectories_data');
@@ -54,10 +54,12 @@ end
 
 %% plot histogram
 speedlist = vertcat(speedlist{:});
-histogram(speedlist,'BinWidth',0.1,'Normalization','Probability','EdgeColor','none')
+% convert speeds from pixel/frame to micron/frame
+speedlistmicron = speedlist/19.5*100;
+histogram(speedlistmicron,'BinWidth',0.5,'Normalization','Probability','EdgeColor','none')
 xlim([0,MaxSpeed])
-xlabel('speed (pixels/frame)','FontSize',20)
-ylabel('incidence','FontSize',20)
-title(strcat({directory(28:41)},{', frames '},{num2str(firstframe)},{'-'},{num2str(firstframe+NumberOfFrames)}))
-set(gca,'FontSize',15)
-set(t,'FontSize',20)
+xlabel('speed (microns/frame)','FontSize',20)
+ylabel('probability','FontSize',20)
+t = title(strcat({directory(39:52)},{', frames '},{num2str(firstframe)},{'-'},{num2str(firstframe+NumberOfFrames)}));
+set(gca,'FontSize',10)
+set(t,'Fontsize',15)
