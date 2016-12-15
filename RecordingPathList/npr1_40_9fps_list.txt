@@ -1,0 +1,4 @@
+/data2/shared/data/Results/recording 37.2 green 100-200 TIFF/recording 37.2 green_X1_skeletons.hdf5
+/data2/shared/data/Results/recording 38.5 green 100-200 TIFF/recording 38.5 green_X1_skeletons.hdf5
+/data2/shared/data/Results/recording 39.4 green 100-250 TIFF/recording 39.4 green_X1_skeletons.hdf5
+/data2/shared/data/Results/recording 42.1 green 100-250 TIFF/recording 42.1 green_X1_skeletons.hdf5
