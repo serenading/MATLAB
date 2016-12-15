@@ -1,14 +1,16 @@
 % calculate worm speeds from tracking data and generates heatmap of speed
 % for the entire length of the movie
 
-%% set variabless
+%% set variables
 % directory should be set to the skeleton file for the appropriate movie
-directory = '/data2/shared/data/Results/recording 37.4 green 100-350 TIFF/recording 37.4 green_X1_skeletons.hdf5';
+directory = '/data2/shared/data/Results/recording 31.2 green 100-500 TIFF/recording 31.2 green_X1_skeletons.hdf5';
 % set the number of frames used to generate each column of the heatmap
 framespercol = 20;
 % set name of speedmatrix file to be saved at the end
 matname = strcat({directory(38:41)},{'speed.mat'});
-
+% set maximum speed in microns per frame (=50 for movies at 9fps and =150
+% for movies at 3 fps)
+maxspeed = 50;
 %% load trajectory file
 skelTrajData = h5read(directory,'/trajectories_data');
 % determine total number of frames in the video
@@ -73,7 +75,7 @@ while colnum <= totalcol
     % convert speeds from pixel/frame to micron/frame
     speedlistmicron = speedlist/19.5*100;
     % set maximum speed to 50 microns/frame
-    removespeed = find(speedlistmicron>50);
+    removespeed = find(speedlistmicron>maxspeed);
     speedlistmicron(removespeed)=[];
     % retrieve the number of instances that fall within each speed bin
     h = histogram(speedlistmicron,'BinWidth',0.5,'NumBins',100,'Normalization','Probability');
