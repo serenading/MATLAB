@@ -1,8 +1,8 @@
 % converted some masked hdf5 frames to tiffs to run piv lab on them
-firstFrame = 1;
-nFrames = 30000;
-pathName = '/Volumes/behavgenom_archive$/Serena/masked videos/26.10.16 recording 37/recording 37.1 green 100-350 TIFF/';
-hdf5fileName = 'recording 37.1 green_X1.hdf5';
+firstFrame = 5000;
+nFrames = 500;
+pathName = '/data2/shared/data/MaskedVideos/recording 38.8 green 100-200 TIFF/';
+hdf5fileName = 'recording 38.8 green_X1.hdf5';
 testImages = h5read([pathName hdf5fileName],'/mask',[1 1 firstFrame],[2560 2160 nFrames]);
 % set parameters
 imgdata = testImages(:,:,1);

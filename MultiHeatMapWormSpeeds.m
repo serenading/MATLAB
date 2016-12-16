@@ -5,7 +5,6 @@
 
 % retrieve the list of files to plot, one line at a time
 fid = fopen('list2plot.txt');
-directory = fgetl(fid);
 % set the number of frames used to generate each column of the heatmap
 framespercol = 20;
 % set maximum speed in microns per frame (=50 for movies at 9fps and =150
@@ -13,6 +12,7 @@ framespercol = 20;
 maxspeed = 50;
 
 %% load trajectory file off the list, one at a time
+directory = fgetl(fid);
 while ischar(directory)
     disp(directory)
     skelTrajData = h5read(directory,'/trajectories_data');
@@ -28,7 +28,7 @@ while ischar(directory)
     % set first column number
     colnum = 1;
     
-    %% loop through each column
+    %% loop through each column of pooled frames
     while colnum <= totalcol
         %% calculate speed for each column
         
