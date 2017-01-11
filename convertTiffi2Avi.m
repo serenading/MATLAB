@@ -1,5 +1,5 @@
 % turn hdf5 into avi for presentations with white background
-function tiffintoavi(directory)
+function convertTiff2Avi(directory)
 
 frameRate = 30; % set frame rate of movie
 useEveryNthFrame = 1; % set to only use every 2nd, 3rd, etc frame
