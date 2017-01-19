@@ -3,7 +3,7 @@
 
 %% set variables
 % directory should be set to the skeleton file for the appropriate movie
-directory = '/data2/shared/data/Results/recording 31.2 green 100-500 TIFF/recording 31.2 green_X1_skeletons.hdf5';
+directory = '/data2/shared/data/Results/recording 38.1 green 100-350 TIFF/recording 38.1 green_X1_skeletons.hdf5';
 % set the number of frames used to generate each column of the heatmap
 framespercol = 20;
 % set name of speedmatrix file to be saved at the end
