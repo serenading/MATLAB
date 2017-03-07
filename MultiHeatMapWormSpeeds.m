@@ -60,7 +60,7 @@ while ischar(directory)
                 overlapLogInd = ismember(wormInds,skelTrajData.worm_index_joined(nextFrameLogInd)); %returns logical indices for worms that appear in both frames
                 if nnz(nextFrameWormLogInd) > nnz(overlapLogInd)
                     warning(['Some worm(s) from frame ' num2str(FrameList(ii)) ' appear(s) more than once in frame ' num2str(FrameList(ii)) '+1. Cannot calculate speed.'])
-                else
+                elseif any(overlapLogInd)
                     u(overlapLogInd) = skelTrajData.coord_x(nextFrameWormLogInd) - x(overlapLogInd);
                     v(overlapLogInd) = skelTrajData.coord_y(nextFrameWormLogInd) - y(overlapLogInd);
                     speed = sqrt(u.^2 + v.^2);

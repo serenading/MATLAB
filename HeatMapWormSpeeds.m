@@ -3,18 +3,24 @@
 
 %% set variables
 % directory should be set to the skeleton file for the appropriate movie
-directory = '/data2/shared/data/Results/recording 38.1 green 100-350 TIFF/recording 38.1 green_X1_skeletons.hdf5';
-% set the number of frames used to generate each column of the heatmap
-framespercol = 20;
-% set name of speedmatrix file to be saved at the end
-matname = strcat({directory(38:41)},{'speed.mat'});
+directory = '/Users/sding/Desktop/new/data/Results/recording 39.6 green 100-250 TIFF/recording 39.6 green_X1_skeletons.hdf5';
+% set intensity threshold. Set to 100 for single worm, 50 for 40 worm, and
+% 40 for high density movies. 
+IntensityThres = 50;
 % set maximum speed in microns per frame (=50 for movies at 9fps and =150
 % for movies at 3 fps)
 maxspeed = 50;
+% set the number of frames used to generate each column of the heatmap
+framespercol = 20;
+% set name of speedmatrix file to be saved at the end. If at Hammersmith,
+% use 49:52; if at SK, use 38:41
+% matname = strcat({directory(38:41)},{'speed.mat'});
+matname = strcat({directory(49:52)},{'speed.mat'});
+
 %% load trajectory file
-skelTrajData = h5read(directory,'/trajectories_data');
+TrajData = h5read(directory,'/trajectories_data');
 % determine total number of frames in the video
-totalframe = max(skelTrajData.frame_number);
+totalframe = max(TrajData.frame_number);
 % determine total columns of frames inside the heatmap, ignoring the last
 % few frames that won't suffice for a full framebin 
 totalcol = floor(totalframe / framespercol);
@@ -24,6 +30,24 @@ speedmatrix = zeros(100,totalcol);
 firstframe = 1;
 % set first column number
 colnum = 1;
+
+%% remove data by intensity threshold
+    BlobFeats = h5read(directory,'/blob_features');
+    ValidWormIndex = BlobFeats.intensity_mean > IntensityThres;
+    ValidWormIndex = int32(ValidWormIndex);
+    Frames = TrajData.frame_number;
+    Frames = Frames .* ValidWormIndex;
+    lowIntIndices = find(Frames == 0);
+    Frames(lowIntIndices) = [];
+    WormIndexJoined = TrajData.worm_index_joined;
+    WormIndexJoined = WormIndexJoined .* ValidWormIndex;
+    WormIndexJoined(lowIntIndices) = [];
+    XCoord = TrajData.coord_x;
+    XCoord = XCoord .* single(ValidWormIndex);
+    XCoord(lowIntIndices) = [];
+    YCoord = TrajData.coord_y;
+    YCoord = YCoord .* single(ValidWormIndex);
+    YCoord(lowIntIndices) = [];
 
 %% loop through each column
 while colnum <= totalcol
@@ -38,13 +62,13 @@ while colnum <= totalcol
     for ii = 1:numel(FrameList)
         
         % calculates the x, y positions and u, v displacement components
-        currentFrameLogInd = skelTrajData.frame_number== FrameList(ii);
-        nextFrameLogInd = skelTrajData.frame_number== FrameList(ii) + 1;
-        wormInds = unique(skelTrajData.worm_index_joined(currentFrameLogInd));
+        currentFrameLogInd = Frames == FrameList(ii);
+        nextFrameLogInd = Frames == FrameList(ii) + 1;
+        wormInds = unique(WormIndexJoined(currentFrameLogInd));
         nWorms = numel(wormInds);
         % get positions
-        x = skelTrajData.coord_x(currentFrameLogInd);
-        y = skelTrajData.coord_y(currentFrameLogInd);
+        x = XCoord(currentFrameLogInd);
+        y = YCoord(currentFrameLogInd);
         % initialise displacements
         u = NaN(size(x));
         v = NaN(size(y));
@@ -53,13 +77,13 @@ while colnum <= totalcol
             warning(['Some worm(s) appear(s) more than once in frame ' num2str(FrameList(ii)) '. Cannot calculate speed.'])
         else
             % check which worms continute to next frame
-            nextFrameWormLogInd = nextFrameLogInd&ismember(skelTrajData.worm_index_joined,wormInds); %returns logical indices for next frame that have the worm
-            overlapLogInd = ismember(wormInds,skelTrajData.worm_index_joined(nextFrameLogInd)); %returns logical indices for worms that appear in both frames
+            nextFrameWormLogInd = nextFrameLogInd&ismember(WormIndexJoined,wormInds); %returns logical indices for next frame that have the worm
+            overlapLogInd = ismember(wormInds,WormIndexJoined(nextFrameLogInd)); %returns logical indices for worms that appear in both frames
             if nnz(nextFrameWormLogInd) > nnz(overlapLogInd)
                 warning(['Some worm(s) from frame ' num2str(FrameList(ii)) ' appear(s) more than once in frame ' num2str(FrameList(ii)) '+1. Cannot calculate speed.'])
-            else
-                u(overlapLogInd) = skelTrajData.coord_x(nextFrameWormLogInd) - x(overlapLogInd);
-                v(overlapLogInd) = skelTrajData.coord_y(nextFrameWormLogInd) - y(overlapLogInd);
+            elseif any(overlapLogInd)
+                u(overlapLogInd) = XCoord(nextFrameWormLogInd) - x(overlapLogInd);
+                v(overlapLogInd) = YCoord(nextFrameWormLogInd) - y(overlapLogInd);
                 speed = sqrt(u.^2 + v.^2);
                 if any(~overlapLogInd)
                     disp([ num2str(nnz(~overlapLogInd)) ' of ' num2str(nWorms) ' worms did not appear in frame ' num2str(FrameList(ii)) '+1.'])
@@ -89,5 +113,6 @@ end
 
 %% save speedmatrix data and plot heatmap
 save(char(matname),'speedmatrix')
-HeatMap(speedmatrix)
+figure;
+imagesc(speedmatrix);set(gca,'YDir','normal')
 disp(directory)
