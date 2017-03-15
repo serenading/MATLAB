@@ -3,19 +3,19 @@
 
 %% set variables
 % directory should be set to the skeleton file for the appropriate movie
-directory = '/Users/sding/Desktop/new/data/Results/recording 39.6 green 100-250 TIFF/recording 39.6 green_X1_skeletons.hdf5';
+directory = '/data2/shared/data/twoColour/Results/recording55/recording55.3g100-350TIFF/recording55.3g_X1_skeletons.hdf5';
 % set intensity threshold. Set to 100 for single worm, 50 for 40 worm, and
 % 40 for high density movies. 
-IntensityThres = 50;
+IntensityThres = 40;
 % set maximum speed in microns per frame (=50 for movies at 9fps and =150
 % for movies at 3 fps)
 maxspeed = 50;
 % set the number of frames used to generate each column of the heatmap
 framespercol = 20;
-% set name of speedmatrix file to be saved at the end. If at Hammersmith,
-% use 49:52; if at SK, use 38:41
+% set name of speedmatrix file to be saved at the end. For dataset 1, if at Hammersmith,
+% use 49:52; if at SK, use 38:41. For dataset 2, if at SK, use 59:62
 % matname = strcat({directory(38:41)},{'speed.mat'});
-matname = strcat({directory(49:52)},{'speed.mat'});
+matname = strcat({directory(59:62)},{'.mat'});
 
 %% load trajectory file
 TrajData = h5read(directory,'/trajectories_data');

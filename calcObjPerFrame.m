@@ -24,8 +24,7 @@ while ischar(sfpath)
     
     % remove data by intensity threshold
     BlobFeats = h5read(sfpath,'/blob_features');
-    ValidWormIndex = BlobFeats.intensity_mean > IntensityThres;
-    ValidWormIndex = int32(ValidWormIndex);
+    ValidWormIndex = int32(BlobFeats.intensity_mean > IntensityThres);
     %ValidWormIndex = h5read(sfpath,'/ValidWormIndex_IntensityThreshold');
     Frames = trajData.frame_number;
     Frames = Frames .* ValidWormIndex;
