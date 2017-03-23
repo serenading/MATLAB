@@ -3,7 +3,7 @@
 
 %% set variables
 % directory should be set to the skeleton file for the appropriate movie
-directory = '/data2/shared/data/twoColour/Results/recording55/recording55.3g100-350TIFF/recording55.3g_X1_skeletons.hdf5';
+directory = '/data2/shared/data/twoColour/Results/recording64/recording64.1g100-350TIFF/recording64.1g_X1_skeletons.hdf5';
 % set intensity threshold. Set to 100 for single worm, 50 for 40 worm, and
 % 40 for high density movies. 
 IntensityThres = 40;

@@ -2,7 +2,7 @@
 
 %% set variables
 % directory should be set to the skeleton file for the appropriate movie
-directory = '/data2/shared/data/Results/recording 33.5 green 100-350 TIFF/recording 33.5 green_X1_skeletons.hdf5';
+directory = '/data2/shared/data/twoColour/Results/recording58/recording58.1g100-350TIFF/recording58.1g_X1_skeletons.hdf5';
 firstframe = 1;
 NumberOfFrames = 20;
 MaxSpeed = 51.3;
