@@ -5,7 +5,7 @@ close all
 clear
  tic
 %% set parameters
-strains = {'npr1','N2'};
+strains = {'HA','npr1','N2'};
 wormnums = {'40','HD'};
 minIntensities = [50, 40]; %script takes minIntensity 100 for 1W, 50 for 40W, and 40 for HD
 maxBlobSize = 1e4;
@@ -22,7 +22,7 @@ for numCtr = 1:length(wormnums)
         strain = strains{strainCtr};
         figure, hold on
         % load green channel file list (from second dataset)
-        filenames = importdata([strains{strainCtr} '_' wormnum '_g_list.txt']);
+        filenames = importdata([strains{strainCtr} '_' wormnum '_list.txt']);
         numFiles = length(filenames);
         % preallocate space to write values into a struct later
          recordingNamesList = cell(numFiles,1);
@@ -58,7 +58,7 @@ for numCtr = 1:length(wormnums)
             end
             clusterStatus = zeros(length(frameList),3);
             trajData.filtered = trajData.worm_index_joined.*int32(validWormInd1).*int32(validWormInd2);
-            for frame = 1:length(frameList)
+            parfor frame = 1:length(frameList)
                 [inCluster, loneWorms, rest] = getWormClusterStatus(trajData, frame, pixelsize, maxNeighbourDist, inClusterRadius, inClusterNeighbourNum);
                 clusterStatus(frame,:) = [nnz(inCluster),nnz(loneWorms),nnz(rest)];
             end
@@ -91,7 +91,7 @@ for numCtr = 1:length(wormnums)
             %numMaxSpeed = numel(wormInd3);
             %% fill in a values for making a struct
             nameSplit = strsplit(filename,'/');
-            hdf5Name = nameSplit(9);
+            hdf5Name = nameSplit(7);
             hdf5Split = strsplit(hdf5Name{1},'_X1');
             recordingName = hdf5Split(1);
             namestr = recordingName{1};
@@ -114,8 +114,8 @@ for numCtr = 1:length(wormnums)
         legend(recordingNamesList);
         % make a struct with plot values
         plotvalues = struct('Recording',recordingNamesList,'Tracks',numTracksVec,'MinInt',numMinIntVec,'MaxBlobSize',numMaxBlobSizeVec);
-        structName = strcat('TrackingQualityGreen_',strain,'_',wormnum,'.mat');
-        figName = strcat('TrackingQualityGreen_',strain,'_',wormnum,'.fig');
+        structName = strcat('TrackingQualityGreen_',strain,'_',wormnum,'_1.mat');
+        figName = strcat('TrackingQualityGreen_',strain,'_',wormnum,'_1.fig');
         save(structName,'plotvalues');
         savefig(figName);
         close all;
@@ -128,8 +128,8 @@ for numCtr = 1:length(wormnums)
         ylim([0,100])
         ylabel('Relative proportion of worms (%)');
         legend('inCluster','loneWorms','rest')
-        fig2Name = strcat('TrackingQualityGreen_ClusterProportion_',strain,'_',wormnum,'.fig');
-        matrix2Name = strcat('TrackingQualityGreen_ClusterProportion_',strain,'_',wormnum,'.mat');
+        fig2Name = strcat('TrackingQualityGreen_ClusterProportion_',strain,'_',wormnum,'_1.fig');
+        matrix2Name = strcat('TrackingQualityGreen_ClusterProportion_',strain,'_',wormnum,'_1.mat');
         savefig(fig2Name);
         save(matrix2Name,'clusterProportion')
         close all;
