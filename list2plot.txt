@@ -1,12 +1,11 @@
-N2 40
-/Users/sding/Desktop/new/data/Results/recording 36.2 green 100-200 TIFF/recording 36.2 green_X1_skeletons.hdf5
-/Users/sding/Desktop/new/data/Results/recording 37.5 green 100-200 TIFF/recording 37.5 green_X1_skeletons.hdf5
-/Users/sding/Desktop/new/data/Results/recording 40.1 green 100-250 TIFF/recording 40.1 green_X1_skeletons.hdf5
-/Users/sding/Desktop/new/data/Results/recording 41.1 green 100-250 TIFF/recording 41.1 green_X1_skeletons.hdf5
-/Users/sding/Desktop/new/data/Results/recording 42.5 green 100-250 TIFF/recording 42.5 green_X1_skeletons.hdf5
-/Users/sding/Desktop/new/data/Results/recording 43.9 green 100-250 TIFF/recording 43.9 green_X1_skeletons.hdf5
-/Users/sding/Desktop/new/data/Results/recording 31.8 green 100-350 TIFF/recording 31.8 green_X1_skeletons.hdf5
-/Users/sding/Desktop/new/data/Results/recording 32.3 green 100-200 TIFF/recording 32.3 green_X1_skeletons.hdf5
-/Users/sding/Desktop/new/data/Results/recording 33.2 green 100-200 TIFF/recording 33.2 green_X1_skeletons.hdf5
-/Users/sding/Desktop/new/data/Results/recording 34.8 green 100-200 TIFF/recording 34.8 green_X1_skeletons.hdf5
-/Users/sding/Desktop/new/data/Results/recording 35.4 green 100-200 TIFF/recording 35.4 green_X1_skeletons.hdf5
+/data2/shared/data/twoColour/Results/recording52/recording52.1g100-350/recording52.1g_X1_skeletons.hdf5
+/data2/shared/data/twoColour/Results/recording53/recording53.1g100-200/recording53.1g_X1_skeletons.hdf5
+/data2/shared/data/twoColour/Results/recording54/recording54.3g100-350/recording54.3g_X1_skeletons.hdf5
+/data2/shared/data/twoColour/Results/recording55/recording55.1g100-350/recording55.1g_X1_skeletons.hdf5
+/data2/shared/data/twoColour/Results/recording55/recording55.6g100-350/recording55.6g_X1_skeletons.hdf5
+/data2/shared/data/twoColour/Results/recording56/recording56.2g100-350/recording56.2g_X1_skeletons.hdf5
+/data2/shared/data/twoColour/Results/recording57/recording57.1g100-350/recording57.1g_X1_skeletons.hdf5
+/data2/shared/data/twoColour/Results/recording58/recording58.5g100-350/recording58.5g_X1_skeletons.hdf5
+/data2/shared/data/twoColour/Results/recording61/recording61.1g100-350/recording61.1g_X1_skeletons.hdf5
+/data2/shared/data/twoColour/Results/recording63/recording63.1g100-350/recording63.1g_X1_skeletons.hdf5
+/data2/shared/data/twoColour/Results/recording63/recording63.2g100-350/recording63.2g_X1_skeletons.hdf5

@@ -1,6 +1,6 @@
 % quantify how much data has been tracked and filtered out at various stages: 
 % 1. minimum intensity threshold filter; 2. maximum blob size filter; 3. has skeleton
-% 4. has good skeleton; 5. minimum skeleton length filter; 6. in vs. out of cluster
+% 4. has good skeleton; 5. minimum skeleton length filter; 
 % saves a struct that contains the amount of data left after each filter
 % and a plot that provides visualisation of it
 close all
@@ -10,12 +10,12 @@ clear
 strains = {'npr1','N2'};
 wormnums = {'40','HD'};
 minIntensities = [35, 70]; % script takes 35 for all movies but recordings 54 and 55, which takes 70 because the dynamic ranges were different for those movies
-maxBlobSize = 25000;
+maxBlobSize = 250000;
 minSkelLength = 850;
 pixelsize = 100/19.5; % 100 microns is 19.5 pixels
 maxNeighbourDist = 2500;
 inClusterRadius = 500;
-inClusterNeighbourNum = 2;
+inClusterNeighbourNum = 3;
 %maxSpeed = 10 * pixelsize; % 1000 microns per frame maximum speed
 
 %% go through different strains, densities, and movies
@@ -56,7 +56,7 @@ for numCtr = 1:length(wormnums)
             wormInd1 = trajData.worm_index_joined.* int32(validWormInd1);
             numMinInt = nnz(wormInd1);
             % MaxBlobSize
-            validWormInd2 = blobFeats.area < maxBlobSize;
+            validWormInd2 = blobFeats.area*pixelsize^2 < maxBlobSize;
             wormInd2 = wormInd1.*int32(validWormInd2);
             numMaxBlobSize = nnz(wormInd2);
             % HasSkeleton
@@ -72,43 +72,6 @@ for numCtr = 1:length(wormnums)
             validWormInd5 = skelLengths(:) > minSkelLength;
             wormInd5 = wormInd4.*int32(validWormInd5);
             numMinSkelLength = nnz(wormInd5);
-            % in/outCluster
-            validFrames = trajData.frame_number(logical(wormInd5));
-            clusterStatus = zeros(numel(validFrames),3);
-            for frameCtr = 1:length(validFrames);
-                frame = validFrames(frameCtr);
-                [inCluster, loneWorms, rest] = getWormClusterStatus(trajData, frame, pixelsize, maxNeighbourDist, inClusterRadius, inClusterNeighbourNum);
-                clusterStatus(frameCtr,:) = [nnz(inCluster),nnz(loneWorms),nnz(rest)];
-            end
-            numInCluster = sum(clusterStatus(:,1));
-            numLoneWorms = sum(clusterStatus(:,2));
-            numRest = sum(clusterStatus(:,3));
-            totalnum = numInCluster + numLoneWorms + numRest;
-            clusterProportion(fileCtr,:)=[numInCluster,numLoneWorms,numRest]./totalnum;
-            % MaxSpeed
-            %xpos = trajData.coord_x(logical(wormInd5));
-            %ypos = trajData.coord_y(logical(wormInd5));
-            %uniqueWormInd5 = unique(wormInd5);
-            %avgWormSpeed = zeros(wormInd5,1);
-            %for objInd5Ctr = 1:numel(wormInd5)
-            %    objInd6 = wormInd5(objInd5Ctr);
-            %    objRowList = find(trajData.worm_index_joined == objInd6);
-            %    objFrameList = trajData.frame_number(objRowList);
-            %    objFrameContLogInd = [diff(objFrameList)==1]; % check that the frame numbers are continuous
-            %    wormMissingFrame = 0;
-            %    if sum(objFrameContLogInd)+1 == numel(objFrameList) % if frame numbers are continous
-            %        u = trajData.coord_x(objRowList(1)) - trajData.coord_x(objRowList(numel(objRowList)));
-            %        v = trajData.coord_y(objRowList(1)) - trajData.coord_y(objRowList(numel(objRowList)));
-            %        avgWormSpeed(objInd5Ctr) = sqrt(u^2 + v^2)/numel(objRowList);
-            %    else % if frame numbers are not continous 
-            %        disp(filename)
-            %        disp(objInd5Ctr)
-            %        wormMissingFrame = wormMissingFrame+1;  
-            %    end
-            %end
-            %validWormInd6 = avgWormSpeed < maxSpeed;
-            %wormInd6 = wormInd5.*int32(validWormInd6);
-            %numMaxSpeed = nnz(wormInd6);
             %% fill in a values for making a struct
             nameSplit = strsplit(filename,'/');
             hdf5Name = nameSplit(9);
@@ -140,20 +103,5 @@ for numCtr = 1:length(wormnums)
         figName = strcat('TrackingQualityRed_',strain,'_',wormnum,'.fig');
         save(structName,'plotvalues');
         savefig(figName);
-        close all;
-        % make second plot showing proportion of in/out/rest cluster worms,
-        % save figure, save clusterProportion matrix
-        figure;
-        bar(clusterProportion*100,'stacked')
-        title([strain ' ' wormnum],'FontWeight','normal')
-        xticklabels(recordingNamesList);
-        ylim ([0,100])
-        ylabel('Relative proportion of worms (%)');
-        legend('inCluster','loneWorms','rest')
-        fig2Name = strcat('TrackingQualityRed_ClusterProportion_',strain,'_',wormnum,'.fig');
-        matrix2Name = strcat('TrackingQualityRed_ClusterProportion_',strain,'_',wormnum,'.mat');
-        savefig(fig2Name);
-        save(matrix2Name,'clusterProportion')
-        close all;
     end
 end

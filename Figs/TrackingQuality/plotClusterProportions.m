@@ -4,7 +4,7 @@
 close all
 clear
 
-strains = {'N2','npr1'};
+strains = {'N2_1','HA_1','npr1_1'};
 wormnums = {'40','HD'};
 figure;
 for numCtr = 1:length(wormnums)

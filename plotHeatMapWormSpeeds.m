@@ -3,13 +3,13 @@
 
 %% set variables
 % directory should be set to the skeleton file for the appropriate movie
-directory = '/data2/shared/data/twoColour/Results/recording64/recording64.1g100-350TIFF/recording64.1g_X1_skeletons.hdf5';
+directory = '/data2/shared/data/Results/recording32.6g100-200/recording32.6g_X1_skeletons.hdf5';
 % set intensity threshold. Set to 100 for single worm, 50 for 40 worm, and
 % 40 for high density movies. 
-IntensityThres = 40;
+IntensityThres = 50;
 % set maximum speed in microns per frame (=50 for movies at 9fps and =150
 % for movies at 3 fps)
-maxspeed = 50;
+maxspeed = 150;
 % set the number of frames used to generate each column of the heatmap
 framespercol = 20;
 % set name of speedmatrix file to be saved at the end. For dataset 1, if at Hammersmith,
