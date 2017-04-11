@@ -8,8 +8,8 @@
 % not sure how to put label for the grouped stacked bars, but first bar is
 % inCluster, second bar is loneWorms, and third bar is rest for each movie
 
-strains = {'N2'};
-wormnums = {'HD'};
+strains = {'npr1','N2'};
+wormnums = {'HD','40'};
 for numCtr = 1:length(wormnums)
     wormnum = wormnums{numCtr};
     for strainCtr = 1:length(strains)
@@ -49,6 +49,7 @@ for numCtr = 1:length(wormnums)
         figname = strcat('TrackingQualityRed_IsGoodSkel_effect_',strain,'_',wormnum,'_numbers.fig');
         ylabel('Number of datapoints')
         savefig(figname);
+        close all
         % stacked bar matrix as percentages
         stackData2 = 100*stackData(:,:,1:2)./(stackData(:,:,1)+stackData(:,:,2));
         % plot percentage figure;
@@ -58,5 +59,6 @@ for numCtr = 1:length(wormnums)
         figname = strcat('TrackingQualityRed_IsGoodSkel_effect_',strain,'_',wormnum,'_percentage.fig');
         ylabel('Percentage of data')
         savefig(figname);
+        close all
     end
 end

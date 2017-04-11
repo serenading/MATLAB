@@ -3,7 +3,7 @@ clear
 
 %% set parameters
 strains = {'npr1','N2'};
-wormnums = {'HD'};
+wormnums = {'40','HD'};
 minIntensities_r = [35, 70]; % script takes 35 for all movies but recordings 54 and 55, which takes 70 because the dynamic ranges were different for those movies
 minIntensities_g = [60, 40]; %script takes minIntensity 100 for 1W, 60 for 40W, and 40 for HD
 maxBlobSize_r = 250000;
@@ -46,7 +46,7 @@ for numCtr = 1:length(wormnums)
             skelLengths = sum(sqrt(sum((diff(skelData_r,1,2)*pixelsize).^2)));
             trajData_r.filtered = (blobFeats_r.intensity_mean >= minIntensity)&...
                 (blobFeats_r.area*pixelsize^2 <= maxBlobSize_r)&...
-                logical(trajData_r.is_good_ske);
+                logical(trajData_r.is_good_skel)&...
                 logical(skelLengths(:)>minSkelLength_r);
             trajData_g.filtered = (blobFeats_g.area*pixelsize^2 <= maxBlobSize_g)&...
                     (blobFeats_g.intensity_mean >= minIntensities_g(numCtr));
