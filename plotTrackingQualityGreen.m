@@ -8,18 +8,17 @@ clear
 strains = {'npr1','N2'};
 wormnums = {'40','HD'};
 dataset = 2; % set to 1 for first dataset and set to 2 for second dataset (TwoColour)
-if dataset ==2
-    minIntensities = [60, 40]; %script takes minIntensity 100 for 1W, 50 for 40W, and 40 for HD
-elseif dataset ==1
-        minIntensities = [50,40]
-    end
-end
 maxBlobSize = 1e4;
 pixelsize = 100/19.5; % 100 microns is 19.5 pixels
 maxNeighbourDist = 2500;
 inClusterRadius = 500;
 inClusterNeighbourNum = 3;
 
+if dataset ==2
+    minIntensities = [60, 40]; %script takes minIntensity 100 for 1W, 50 for 40W, and 40 for HD
+elseif dataset ==1
+        minIntensities = [50,40]
+end
 
 %% go through different strains, densities, and movies
 for numCtr = 1:length(wormnums)
