@@ -1,5 +1,6 @@
 % Filter for small clusters (2-4 neighbrs) using distance to 10 nearest neighbrs written to red hdf5 files. 
-% Returns matrices logical indices for small clusters, and for nnz values of logical indices. 
+% Returns matrices with logical indices for small clusters, and nnz values
+% of small clusters
 % Generates bar graphs to compare small cluster frequencies across strains and densities.
 
 close all
@@ -8,13 +9,12 @@ clear
 %% set parameters
 strains = {'npr1','N2'};
 wormnums = {'40','HD'};
-minIntensities_r = [40, 80]; % script takes 40 for all movies but recordings 54 and 55, which takes 80 because the dynamic ranges were different for those movies
-maxBlobSize_r = 250000;
-minSkelLength_r = 850;
+minIntensities_g = [60, 40];
+maxBlobSize_g = 1e4;
 pixelsize = 100/19.5; % 100 microns is 19.5 pixels
-loneClusterRadius = 2500;
+loneClusterRadius = 2000;
 inClusterRadius = 500;
-minNumNeighbrs = [2,3,4];                  
+minNumNeighbrs = [2,3,4];
 
 %% go through different strains, densities, and movies
 for numCtr = 1:length(wormnums)
@@ -22,34 +22,25 @@ for numCtr = 1:length(wormnums)
     for strainCtr = 1:length(strains)
         strain = strains{strainCtr};
         % load files
-        filenames_r = importdata([strains{strainCtr} '_' wormnum '_r_list.txt']);
-        numFiles = length(filenames_r);
+        filenames_g = importdata([strains{strainCtr} '_' wormnum '_g_list.txt']);
+        numFiles = length(filenames_g);
         for fileCtr = 1:numFiles
-            filename_r = filenames_r{fileCtr};
-            trajData_r = h5read(filename_r,'/trajectories_data');
-            blobFeats_r = h5read(filename_r,'/blob_features');
-            skelData_r = h5read(filename_r,'/skeleton');
-            numCloseNeighbr_r = h5read(filename_r,'/num_close_neighbrs');
-            neighbrDist_r = h5read(filename_r,'/neighbr_distances');
-            % filter worms
-            if isempty(find(filename_r == 54)) || isempty(find(filename_r == 55)) == (3>2)
-                minIntensity = minIntensities_r(1);
-            else
-                minIntensity = minIntensities_r(2);
-            end
-            skelLengths = sum(sqrt(sum((diff(skelData_r,1,2)*pixelsize).^2)));
-            trajData_r.filtered = (blobFeats_r.intensity_mean >= minIntensity)&...
-                (blobFeats_r.area*pixelsize^2 <= maxBlobSize_r)&...
-                logical(trajData_r.is_good_skel)&...
-                logical(skelLengths(:)>minSkelLength_r);
+            filename_g = filenames_g{fileCtr};
+            trajData_g = h5read(filename_g,'/trajectories_data');
+            blobFeats_g = h5read(filename_g,'/blob_features');
+            numCloseNeighbr_g = h5read(filename_g,'/num_close_neighbrs');
+            neighbrDist_g = h5read(filename_g,'/neighbr_distances');
+            % filter worms by intensity and blob size
+            trajData_g.filtered = (blobFeats_g.area*pixelsize^2 <= maxBlobSize_g)&...
+                    (blobFeats_g.intensity_mean >= minIntensities_g(numCtr));
             % filter for small clusters and write logical indices
             numNeighbrs = length(minNumNeighbrs);
-            smallClusterInd = zeros(length(trajData_r.filtered),numNeighbrs);
+            smallClusterInd = zeros(length(trajData_g.filtered),numNeighbrs);
             for neighbrCtr = 1:length(minNumNeighbrs)
                 neighbrNum = minNumNeighbrs(neighbrCtr);
-                smallClusterInd(:,neighbrCtr) = trajData_r.filtered&...
-                    numCloseNeighbr_r== neighbrNum&...
-                    neighbrDist_r(:,neighbrNum+1)>=loneClusterRadius;
+                smallClusterInd(:,neighbrCtr) = trajData_g.filtered&...
+                    numCloseNeighbr_g== neighbrNum&...
+                    neighbrDist_g(:,neighbrNum+1)>=loneClusterRadius;
             end
             % write number of clusters with 2-4 neighbors
             smallClusterNum(strainCtr,numCtr,fileCtr,1)=nnz(smallClusterInd(:,1));
