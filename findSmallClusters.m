@@ -12,7 +12,7 @@ minIntensities_r = [40, 80]; % script takes 40 for all movies but recordings 54 
 maxBlobSize_r = 250000;
 minSkelLength_r = 850;
 pixelsize = 100/19.5; % 100 microns is 19.5 pixels
-loneClusterRadius = 2000;
+loneClusterRadius = 2500;
 inClusterRadius = 500;
 minNumNeighbrs = [2,3,4];
 
@@ -49,7 +49,7 @@ for numCtr = 1:length(wormnums)
                 neighbrNum = minNumNeighbrs(neighbrCtr);
                 D(:,neighbrCtr) = trajData_r.filtered&...
                     numCloseNeighbr_r== neighbrNum&...
-                    neighbrDist_r(neighbrNum+1)>=loneClusterRadius;
+                    neighbrDist_r(:,neighbrNum+1)>=loneClusterRadius;
             end
             % write number of clusters with 2-4 neighbors into E
             E(strainCtr,numCtr,fileCtr,1)=nnz(D(:,1));

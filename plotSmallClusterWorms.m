@@ -5,16 +5,15 @@ clear
 % specify data sets
 strains = {'npr1','N2'};
 wormnums = {'40','HD'};
-numFramesSampled = 30; % how many frames to randomly sample per file
+numFramesSampled = 10; % how many frames to randomly sample per file
 
 % set parameters for filtering data
 neighbrCutOff = 500; % distance in microns to consider a neighbr close
-neighbrNum = 3;
 maxBlobSize = 2.5e5;
 maxBlobSize_g = 1e4;
 minSkelLength = 850;
 maxSkelLength = 1500;
-loneClusterRadius = 2000;
+loneClusterRadius = 2000; % distance in microns to consider a cluster by itself
 intensityThresholds_g = [60, 40, NaN];
 pixelsize = 100/19.5; % 100 microns are 19.5 pixels
 
@@ -29,7 +28,6 @@ for numCtr = 1:length(wormnums)
         for fileCtr=1:numFiles
             filename = filenames{fileCtr};
             filename_g = filenames_g{fileCtr};
-            smallClusterWormsFig = figure;
             if exist(filename,'file')&&exist(filename_g,'file')
                 trajData = h5read(filename,'/trajectories_data');
                 blobFeats = h5read(filename,'/blob_features');
@@ -52,19 +50,21 @@ for numCtr = 1:length(wormnums)
                     &filterSkelLength(skelData,pixelsize,minSkelLength,maxSkelLength);
                 % filter by small cluster status
                 trajData.filtered = trajData.filtered&...
-                    numCloseNeighbr== neighbrNum&...
-                    neighbrDist(neighbrNum+1)>=loneClusterRadius;
+                    ((numCloseNeighbr== 2 & neighbrDist(:,3)>=(loneClusterRadius))...
+                    |(numCloseNeighbr== 3 & neighbrDist(:,4)>=(loneClusterRadius))...
+                    |(numCloseNeighbr== 4 & neighbrDist(:,5)>=(loneClusterRadius)));
                 % filter green channel by blob size and intensity
                 trajData_g.filtered = (blobFeats_g.area*pixelsize^2<=maxBlobSize_g)&...
                     (blobFeats_g.intensity_mean>=intensityThresholds_g(numCtr));
                 % plot sample data
-                if unique(trajData.frame_number(trajData.filtered))<numFramesSampled
+                if length(unique(trajData.frame_number(trajData.filtered)))<numFramesSampled
                     warning(['Not enough frames to plot for ' filename ])
                 elseif unique(trajData.frame_number(trajData.filtered))>=numFramesSampled
+                    smallClusterWormsFig = figure;
                     framesAnalyzed = randsample(unique(trajData.frame_number(trajData.filtered)),numFramesSampled);
                     for frameCtr = 1:numFramesSampled
                         frame=framesAnalyzed(frameCtr);
-                        subplot(5,6,frameCtr)
+                        subplot(2,5,frameCtr)
                         % plot red worm
                         frameIdcs_worm = find(trajData.frame_number==frame&trajData.filtered);
                         if nnz(frameIdcs_worm)>1 % plot only one red worm if multiple present
@@ -93,15 +93,14 @@ for numCtr = 1:length(wormnums)
                         xlim([-2500 2500]/pixelsize + trajData.coord_x(frameIdcs_worm))
                         ylim([-2500 2500]/pixelsize + trajData.coord_y(frameIdcs_worm))
                         set(ax,'visible','off')
+                        movieName = strrep(strrep(filename(end-32:end-17),'_',''),'/','');
+                        title = strcat(strain,'_',wormnum,'_',movieName);
                         ax.Position = ax.Position.*[1 1 1.2 1.2]; % reduce whitespace btw subplots
                     end
                     %% export figure
-                    %figName = strrep(strrep(filename(end-32:end-17),'_',''),'/','');
-                    %set(smallClusterWormsFig,'Name',[strain ' ' wormnum ' ' figName])
-                    %figFileName = ['Figs/SmallCluster/sampleInClusterWorms_' strain '_' wormnum '_' figName '.eps'];
-                    %exportfig(smallClusterWormsFig,figFileName,'Color','rgb')
-                    %system(['epstopdf ' figFileName]);
-                    %system(['rm ' figFileName]);
+                    figName = strcat('smallCluster_',num2str(loneClusterRadius), '_',...
+                        strain,'_',wormnum,'_',movieName,'.fig');
+                    savefig(figName)
                 else
                     warning(['Not all necessary tracking results present for ' filename ])
                 end
@@ -109,4 +108,3 @@ for numCtr = 1:length(wormnums)
         end
     end
 end
-    tilefigs()
